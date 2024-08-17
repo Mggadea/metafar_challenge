@@ -1,25 +1,13 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import StockItem from "./StockItem";
-import axios from "axios";
 
-const StockList = () => {
-  const [stocks, setStocks] = useState([]);
-  const API_KEY = "31e2c4c7403e499bb29c52dbddf6a07c";
-  const API_URL = `https://api.twelvedata.com/stocks?source=docs&exchange=NASDAQ&apikey=${API_KEY}`;
+interface StocksProps {
+  stocks: Array<String>;
 
-  useEffect(() => {
-    const fetchStocks = async () => {
-      try {
-        const response = await axios.get(API_URL);
-        setStocks(response.data.data);
-      } catch (error) {
-        console.error("Error fetching stocks:", error);
-      }
-    };
+}
 
-    fetchStocks();
-  }, []);
+const StockList : React.FC <StocksProps> = ({stocks}) => {
 
   return (
     <>
