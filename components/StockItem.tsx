@@ -1,20 +1,23 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { useNavigation } from "expo-router";
+import { useNavigation, Link } from "expo-router";
+
 
 const StockItem = ({ symbol, name, type, currency }) => {
 
   const navigation = useNavigation()
 
-  const handleNavigate = (symbol:string) => {
-    navigation.navigate('Details')
-  }
 
   return (
     <View style={styles.itemContainer}>
-      <Text
-      onPress={()=>handleNavigate()}
-      style={[styles.headerCell, styles.stockSymbol]}>{symbol}</Text>
+       <Link 
+       href={{
+        pathname: "/Details",
+
+        params: { symbol: symbol },
+      }}       
+       style={[styles.headerCell, styles.stockSymbol]}>{symbol}</Link>
+
       <Text style={styles.headerCell}>{name.slice(0, 20)}</Text>
       <Text style={styles.headerCell} >{currency}</Text>
       <Text style={styles.headerCell}>{type}</Text>
