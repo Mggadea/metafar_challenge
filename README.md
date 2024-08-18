@@ -42,6 +42,10 @@ npm install
 cd ios && pod install 
 
 # agrega tu Api key de twelvedata para poder utilizar los endpoints en el achivo .env
+``` .env
+EXPO_PUBLIC_API_URL = https://api.twelvedata.com
+EXPO_PUBLIC_API_KEY= AÑADI TU KEY ACÀ
+```
     
 # Ejecuta el proyecto
 expo start
