@@ -22,7 +22,7 @@ Este proyecto utiliza varias librerías para diferentes funcionalidades. A conti
 - [axios](https://github.com/axios/axios): Para el manejo de peticiones.
 - [react-navigation](https://reactnavigation.org/): Para la navegación.
 - [react-native-chart-kit](https://www.npmjs.com/package/react-native-chart-kit): Para los crear los gráficos de la pantalla de detalles.
-- [react-native-svg](https://www.npmjs.com/package/react-native-chart-kit): Para los crear los gráficos de la pantalla de detalles.
+- [react-native-svg](https://github.com/software-mansion/react-native-svg): Dependencia necesaria para "react-native-chart-kit".
 
 
 
@@ -41,6 +41,8 @@ cd metafar_challenge
 npm install
 cd ios && pod install 
 
+# agrega tu Api key de twelvedata para poder utilizar los endpoints en el achivo .env
+    
 # Ejecuta el proyecto
 expo start
 ```
