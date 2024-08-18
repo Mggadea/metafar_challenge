@@ -30,7 +30,7 @@ export default StockItem;
 const styles = StyleSheet.create({
   itemContainer: {
     width: "100%",
-
+    height: 80,
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",

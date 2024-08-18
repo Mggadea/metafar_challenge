@@ -2,7 +2,12 @@ import { View, Text, Dimensions } from "react-native";
 import React from "react";
 import { LineChart } from "react-native-chart-kit";
 
-const StockChart = ({ chartData, indices }) => {
+type StockChartProps = {
+  chartData: Array<object>;
+  indices:Array<number>;
+};
+
+const StockChart:React.FC<StockChartProps> = ({ chartData, indices }) => {
   return (
     <View>
       <LineChart

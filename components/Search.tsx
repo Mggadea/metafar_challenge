@@ -5,10 +5,11 @@ import Feather from "@expo/vector-icons/Feather";
 interface SearchProps {
   search: string;
   setSearch: (text: string) => void;
+  focused:boolean
+  setFocused: (boolean:boolean) => void;
 }
 
-const Search: React.FC<SearchProps> = ({ search, setSearch }) => {
-  const [focused, setFocused] = useState(false);
+const Search: React.FC<SearchProps> = ({ search, setSearch,focused,setFocused }) => {
 
   return (
     <Pressable
@@ -20,7 +21,7 @@ const Search: React.FC<SearchProps> = ({ search, setSearch }) => {
     >
       <Feather name="search" size={20} color="#737373" />
       {!focused && !search ? (
-        <Text style={styles.searchText}>Search</Text>
+        <Text style={styles.searchText}>Busca una acción por nombre o símbolo</Text>
       ) : (
         <TextInput
           style={styles.input}

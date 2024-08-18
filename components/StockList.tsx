@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import StockItem from "./StockItem";
 import { Ionicons } from "@expo/vector-icons";
 import Search from "./Search";
+import PageButtons from "./pageButtons";
 
 interface Stock {
   symbol: string;
@@ -18,12 +19,14 @@ interface Stock {
 }
 
 interface StocksProps {
+  search: string;
   stocks: Array<Stock>;
 }
 
-const StockList: React.FC<StocksProps> = ({ search,stocks }) => {
+const StockList: React.FC<StocksProps> = ({ search, stocks }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const totalPages = Math.ceil(stocks.length / itemsPerPage);
 
   const getPaginatedData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -31,29 +34,39 @@ const StockList: React.FC<StocksProps> = ({ search,stocks }) => {
     return stocks.slice(startIndex, endIndex);
   };
 
-  const handleChangePage = (upOrDown:string) => {
+  const handleChangePage = (upOrDown: string) => {
+    if (search == "") {
+      setCurrentPage((prevPage) => {
+        let newPage = prevPage;
 
-    if (search == ''){
-      if (upOrDown === "up") {
-        setCurrentPage((prevPage) => prevPage + 1);
-      } else if (upOrDown === "down") {
-        setCurrentPage((prevPage) => prevPage - 1);
-      }
+        if (upOrDown === "first") {
+          newPage = 1;
+        } else if (upOrDown === "last") {
+          newPage = totalPages;
+        } else if (upOrDown === "up" && prevPage < totalPages) {
+          newPage = prevPage + 1;
+        } else if (upOrDown === "down" && prevPage > 1) {
+          newPage = prevPage - 1;
+        }
+
+        return newPage;
+      });
+    } else {
+      setCurrentPage(1);
     }
-    else(setCurrentPage(1))
- 
   };
+
+  const headerTitles = ["Símbolo", "Nombre", "Moneda", "Tipo"];
 
   return (
     <>
       <View style={styles.listHeader}>
-        <Text style={styles.headerCell}>Simbolo</Text>
-        <Text style={styles.headerCell}>Nombre</Text>
-        <Text style={styles.headerCell}>Moneda</Text>
-        <Text style={styles.headerCell}>Tipo</Text>
+        {headerTitles.map((title, index) => (
+          <Text key={index} style={styles.headerCell}>{title}</Text>
+        ))}
       </View>
       <FlatList
-        data={getPaginatedData()}
+        data={search ? stocks : getPaginatedData()}
         renderItem={({ item }) => (
           <StockItem
             symbol={item.symbol}
@@ -66,30 +79,14 @@ const StockList: React.FC<StocksProps> = ({ search,stocks }) => {
         onEndReachedThreshold={0.1}
       />
 
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          height: 50,
-          paddingHorizontal: 20,
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => handleChangePage("down")}
-          style={styles.button}
-        >
-          <Ionicons name={"chevron-back"} color={"#2b2b2b"} size={30} />
-        </TouchableOpacity>
-
-        <Text style={{ fontSize: 20 }}>Página {currentPage} </Text>
-        <TouchableOpacity
-          onPress={() => handleChangePage("up")}
-          style={styles.button}
-        >
-          <Ionicons name={"chevron-forward"} size={30} />
-        </TouchableOpacity>
-      </View>
+      {!search ? (
+        <PageButtons
+          handleChangePage={handleChangePage}
+          currentPage={currentPage}
+        />
+      ) : (
+        <View style={{ height: 50 }} />
+      )}
     </>
   );
 };
