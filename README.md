@@ -43,14 +43,14 @@ cd ios && pod install
 ```
 
 ```.env
+# Agrega tu API keys de twelvedata en el archivo .env 
     EXPO_PUBLIC_API_URL = https://api.twelvedata.com
     EXPO_PUBLIC_API_KEY= 'Agrega tu key acá'
 
-```
+```bash
 # Ejecuta el proyecto
 expo start
 ```
 
-## Estructura del Proyecto
 
 
