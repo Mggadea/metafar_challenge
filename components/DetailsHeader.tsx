@@ -1,53 +1,59 @@
 import { StyleSheet, Text, View, Image } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import axios from "axios";
+import {
+  fetchStockData,
+  getLogo,
+  getPrice,
+  getQuote,
+} from "@/services/stockScreenServices";
 
 const DetailsHeader = ({ symbol }) => {
   const [stockData, setStockData] = useState(null);
-  const [logoUrl, setLogoUrl] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const fetchStockData = useCallback(async (symbol: string) => {
+    try {
+      setLoading(true);
+      const [quoteData, priceData, logoData] = await Promise.all([
+        getQuote(symbol),
+        getPrice(symbol),
+        getLogo(symbol),
+      ]);
+
+      setStockData({
+        ...quoteData.data,
+        price: priceData.data.price,
+        exchange: quoteData.data.exchange,
+        percent_change: quoteData.data.percent_change,
+        name: quoteData.data.name,
+        logo: logoData.data,
+      });
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
-    const fetchStockData = async () => {
-      try {
-        setLoading(true);
-        const [quoteResponse, priceResponse, logoResponse] = await Promise.all([
-          axios.get(
-            `https://api.twelvedata.com/quote?symbol=${symbol}&apikey=31e2c4c7403e499bb29c52dbddf6a07c`
-          ),
-          axios.get(
-            `https://api.twelvedata.com/price?symbol=${symbol}&apikey=31e2c4c7403e499bb29c52dbddf6a07c`
-          ),
-          axios.get(
-            `https://api.twelvedata.com/logo?symbol=${symbol}&apikey=31e2c4c7403e499bb29c52dbddf6a07c`
-          ),
-        ]);
+    fetchStockData(symbol);
+  }, [symbol, fetchStockData]);
 
-        setStockData({
-          ...quoteResponse.data,
-          ...priceResponse.data,
-        });
-        setLogoUrl(logoResponse.data.url); // Assuming 'logo_url' is the field containing the logo URL
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchStockData();
-  }, [symbol]);
+  const memoizedStockData = useMemo(() => stockData, [stockData]);
 
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error: {error.message}</Text>;
 
-  const { price, exchange, percent_change, name } = stockData || {};
+  const { price, exchange, percent_change, name, logo } = memoizedStockData || {};
 
   return (
+  <>
     <View style={styles.header}>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        {logoUrl && <Image source={{ uri: logoUrl }} style={styles.logo} />}
+ 
+        {logo && <Image source={{ uri: logo.url }} style={styles.logo} />}
         <View style={{ marginLeft: 10 }}>
           <Text style={styles.stockSymbol}>{name}</Text>
           <Text style={styles.stockName}>
@@ -62,6 +68,8 @@ const DetailsHeader = ({ symbol }) => {
         </Text>
       </View>
     </View>
+  </>
+
   );
 };
 
@@ -71,11 +79,12 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width:'100%',
-    paddingVertical:20,paddingHorizontal:10,
+    width: "100%",
+    paddingVertical: 20,
+    paddingHorizontal: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#f4f4f4",
-    marginBottom:40,
+    marginBottom: 40,
   },
   stockSymbol: {
     fontSize: 20,
