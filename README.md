@@ -39,14 +39,14 @@ cd metafar_challenge
 
 # Instala las dependencias
 npm install
-cd ios && pod install 
-
-# agrega tu Api key de twelvedata para poder utilizar los endpoints en el achivo .env
-``` .env
-EXPO_PUBLIC_API_URL = https://api.twelvedata.com
-EXPO_PUBLIC_API_KEY= AÑADI TU KEY ACÀ
+cd ios && pod install
 ```
-    
+
+```.env
+    EXPO_PUBLIC_API_URL = https://api.twelvedata.com
+    EXPO_PUBLIC_API_KEY= 'Agrega tu key acá'
+
+```
 # Ejecuta el proyecto
 expo start
 ```
