@@ -10,6 +10,7 @@ const ErrorScreen:React.FC<ErrorScreenProps> = ({errorMessage, tryAgainFc}) => {
 
 
   const handleTryAgain = () => {
+    alert('press')
     tryAgainFc()
   };
 
@@ -17,7 +18,7 @@ const ErrorScreen:React.FC<ErrorScreenProps> = ({errorMessage, tryAgainFc}) => {
     <View style={styles.container}>
       <Text style={styles.errorText}>Ocurrió un error</Text>
       <Text style={styles.errorMessage}>{errorMessage}</Text>
-      <TouchableOpacity style={styles.buttonError}>
+      <TouchableOpacity onPress={()=>handleTryAgain()} style={styles.buttonError}>
         <Text style={styles.buttonText}>Volver a intentar</Text>
       </TouchableOpacity>
     </View>

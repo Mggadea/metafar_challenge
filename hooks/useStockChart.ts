@@ -8,11 +8,13 @@ const useStockChart = (symbol: string, interval: string, date:string) => {
   const [error, setError] = useState<string | null>(null);
 
   const loadData = async () => {
+    setLoading(true)
     try {
       const fetchedData = await getStockData(symbol, interval, date);
       if (fetchedData.data.status === "error") {
         setError(fetchedData.data.message);
       } else {
+        setError('')
         setData(fetchedData.data.values);
       }
     } catch (err) {
