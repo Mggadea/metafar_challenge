@@ -2,24 +2,36 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { useNavigation, Link } from "expo-router";
 
+interface StockItemProps {
+  symbol: string;
+  name: string;
+  type: string;
+  currency: string;
+}
 
-const StockItem = ({ symbol, name, type, currency }) => {
-
-  const navigation = useNavigation()
-
+const StockItem: React.FC<StockItemProps> = ({
+  symbol,
+  name,
+  type,
+  currency,
+}) => {
+  const navigation = useNavigation();
 
   return (
     <View style={styles.itemContainer}>
-       <Link 
-       href={{
-        pathname: "/Details",
+      <Link
+        href={{
+          pathname: "/Details",
 
-        params: { symbol: symbol },
-      }}       
-       style={[styles.headerCell, styles.stockSymbol]}>{symbol}</Link>
+          params: { symbol: symbol },
+        }}
+        style={[styles.headerCell, styles.stockSymbol]}
+      >
+        {symbol}
+      </Link>
 
       <Text style={styles.headerCell}>{name.slice(0, 20)}</Text>
-      <Text style={styles.headerCell} >{currency}</Text>
+      <Text style={styles.headerCell}>{currency}</Text>
       <Text style={styles.headerCell}>{type}</Text>
     </View>
   );
