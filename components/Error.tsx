@@ -1,4 +1,3 @@
-import { useRouter, useLocalSearchParams } from "expo-router";
 import React from "react";
 import { View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
 

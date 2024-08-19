@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-// import { useLocalSearchParams } from "expo-router";
+import { useRoute } from '@react-navigation/native';
 import DetailsHeader from "@/components/DetailsHeader";
 import IntervalButtons from "@/components/IntervalButtons";
 import StockChart from "@/components/StockChart";
@@ -11,8 +11,8 @@ import useStockDetails from "@/hooks/useStockDetails";
 import { getExcludedIndexes } from "@/helpers/getIndex";
 
 const StockDetailsScreen = () => {
-  const params = useLocalSearchParams();
-  const { symbol } = params;
+  const route = useRoute();
+  const { symbol } = route.params;
 
   if (!symbol) {
     return <Text style={{ color: "red" }}>Symbol is required</Text>;
