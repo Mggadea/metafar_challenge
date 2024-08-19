@@ -1,6 +1,5 @@
-// src/hooks/useStocks.ts
 import { useState, useEffect } from 'react';
-import { fetchStocks } from '@/services/HomeServices';
+import { fetchStocks } from '../services/homeServices';
 
 type Stock = {
   symbol: string;
@@ -14,18 +13,20 @@ const useStocks = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const fetchedData = await fetchStocks();
-        setStocks(fetchedData);
-      } catch (err) {
-        setError('Failed to fetch data');
-      } finally {
-        setLoading(false);
-      }
-    };
 
+  const loadData = async () => {
+    try {
+      const fetchedData = await fetchStocks();
+      setStocks(fetchedData);
+    } catch (err) {
+      setError('Failed to fetch data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  useEffect(() => {
     loadData();
   }, []);
 
