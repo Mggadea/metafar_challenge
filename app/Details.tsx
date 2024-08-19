@@ -15,7 +15,7 @@ import StockChart from "@/components/StockChart";
 import { getExcludedIndexes } from "@/helpers/getIndex";
 import { fetchStockData } from "@/services/stockScreenServices";
 import Loading from "@/components/Loading";
-import ErrorScreen from "@/components/error";
+import ErrorScreen from "@/components/Error";
 
 const Details = () => {
   const params = useLocalSearchParams();
