@@ -1,34 +1,52 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, Dimensions, StyleSheet } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import {
+  View,
+  Text,
+  Button,
+  Dimensions,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
+import { useLocalSearchParams, router } from "expo-router";
 import DetailsHeader from "@/components/DetailsHeader";
 import { dateFormat } from "../helpers/dateFormat";
 import IntervalButtons from "@/components/IntervalButtons";
 import StockChart from "@/components/StockChart";
 import { getExcludedIndexes } from "@/helpers/getIndex";
 import { fetchStockData } from "@/services/stockScreenServices";
+import Loading from "@/components/Loading";
+import ErrorScreen from "@/components/error";
 
 const Details = () => {
   const params = useLocalSearchParams();
   const { symbol } = params;
-  const [interval, setInterval] = useState("1h");
+
+  if (!symbol) {
+    return <Text style={{ color: "red" }}>Symbol is required</Text>;
+  }
+
+  const [interval, setInterval] = useState<string>("1h");
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const fetchedData = await fetchStockData(symbol, interval);
+  const loadData = async () => {
+    try {
+      const fetchedData = await fetchStockData(symbol as string, interval);
+      if (fetchedData.data.status === "error") {
+        setError(fetchedData.data.message);
+      } else {
         setData(fetchedData.data.values);
-      } catch (err) {
-        setError("Failed to fetch data");
-      } finally {
-        setLoading(false);
       }
-    };
+    } catch (err) {
+      setError("Failed to fetch data");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     loadData();
   }, [interval]);
 
@@ -49,23 +67,26 @@ const Details = () => {
   };
 
   const indices = getExcludedIndexes(chartData.labels);
+
+  if (loading) return <Loading />;
+
+  if (error) return <ErrorScreen errorMessage={error} tryAgainFc={loadData} />;
+
   return (
-    <>
-      {loading ? (
-        <Text>Cargando...</Text>
-      ) : (
-        <View
-          style={{ flex: 1, backgroundColor: "#fff", alignItems: "center" }}
-        >
-          <DetailsHeader symbol={symbol} />
-          {chartData && <StockChart chartData={chartData} indices={indices} />}
-          <IntervalButtons setInterval={setInterval} interval={interval} />
-        </View>
-      )}
-    </>
+    <View style={styles.container}>
+      <DetailsHeader symbol={symbol as string} />
+      {chartData && <StockChart chartData={chartData} indices={indices} />}
+      <IntervalButtons setInterval={setInterval} interval={interval} />
+    </View>
   );
 };
 
 export default Details;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+  },
+});
