@@ -1,58 +1,20 @@
+import React from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-import axios from "axios";
-import {
-  fetchStockData,
-  getLogo,
-  getPrice,
-  getQuote,
-} from "@/services/stockScreenServices";
+import Loading from "./Loading";
 
-const DetailsHeader = ({ symbol }) => {
-  const [stockData, setStockData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+interface HeaderProps {
+  stockDetails:string[];
+  symbol: string;
+}
 
-  const fetchStockData = useCallback(async (symbol: string) => {
-    try {
-      setLoading(true);
-      const [quoteData, priceData, logoData] = await Promise.all([
-        getQuote(symbol),
-        getPrice(symbol),
-        getLogo(symbol),
-      ]);
+const DetailsHeader: React.FC<HeaderProps> = ({ stockDetails,symbol }) => {
 
-      setStockData({
-        ...quoteData.data,
-        price: priceData.data.price,
-        exchange: quoteData.data.exchange,
-        percent_change: quoteData.data.percent_change,
-        name: quoteData.data.name,
-        logo: logoData.data,
-      });
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchStockData(symbol);
-  }, [symbol, fetchStockData]);
-
-  const memoizedStockData = useMemo(() => stockData, [stockData]);
-
-  if (loading) return <Text>Loading...</Text>;
-  if (error) return <Text>Error: {error.message}</Text>;
-
-  const { price, exchange, percent_change, name, logo } = memoizedStockData || {};
-
+  const { price, exchange, percent_change, name, logo } = stockDetails || {};
+  
   return (
-  <>
     <View style={styles.header}>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
  
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
         {logo && <Image source={{ uri: logo.url }} style={styles.logo} />}
         <View style={{ marginLeft: 10 }}>
           <Text style={styles.stockSymbol}>{name}</Text>
@@ -68,8 +30,6 @@ const DetailsHeader = ({ symbol }) => {
         </Text>
       </View>
     </View>
-  </>
-
   );
 };
 
@@ -87,7 +47,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   stockSymbol: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
   },
   stockPrice: {
