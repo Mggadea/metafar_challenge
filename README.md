@@ -52,6 +52,22 @@ cd ios && pod install
 # Ejecuta el proyecto
 expo start
 ```
+## Estructura del proyecto
+
+.
+├── api                    # Configuración de  la API
+├── assets                 # Recursos estáticos como fuentes y imágenes
+│   ├── fonts              # Fuentes personalizadas
+│   └── images             # Imágenes utilizadas en la aplicación
+├── components             # Componentes reutilizables de la interfaz de usuario
+│   └── __tests__          # Pruebas unitarias de los componentes
+├── constants              # Constantes y configuraciones globales
+├── helpers                # Funciones auxiliares y utilidades
+├── hooks                  # Hooks personalizados de React
+├── navigation             # Configuración de la navegación
+├── screens                # Pantallas principales de la aplicación
+└── services               # Lógica de negocio y llamadas a servicios 
+
 
 
 
