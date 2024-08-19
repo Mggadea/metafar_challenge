@@ -6,8 +6,9 @@
 2. [Librerias](#Librerias)
 3. [Instalación](#instalación)
 4. [Estructura del Proyecto](#estructura-del-proyecto)
+5. [Comentarios y mejoras](#comentarios)
 
-## Descripción
+# Descripción
 
  Esta es es una aplicación que permite a los usuarios explorar y visualizar datos de acciones.
  La aplicación presenta una tabla paginada con todas las acciones disponibles, con columnas que incluyen Símbolo, Nombre, Moneda y Tipo. 
@@ -26,7 +27,7 @@ Este proyecto utiliza varias librerías para diferentes funcionalidades. A conti
 
 
 
-## Instalación
+# Instalación
 
 Instrucciones para instalar y configurar el proyecto en un entorno local.
 
@@ -52,9 +53,8 @@ cd ios && pod install
 # Ejecuta el proyecto
 expo start
 ```
-## Estructura del proyecto
 
-## Estructura del proyecto
+# Estructura del proyecto
 
 1. `api`  
    Configuración de la API
@@ -79,7 +79,19 @@ expo start
 8. `screens`  
    Pantallas principales de la aplicación
 9. `services`  
-   Lógica de negocio y llamadas a servicios 
+   Lógica de negocio y llamadas a servicios
+   
+# Comentarios
+
+A continuación se detallan algunos aspectos que se podrían mejorar o implementar en futuras versiones del proyecto:
+
+- **Pruebas**: Me gustaría haber agregado más pruebas unitarias y de integración para asegurar la robustez del código y su correcto funcionamiento.
+
+- **Tipado**: Existen áreas en el proyecto donde el tipado podría ser más riguroso. Mejorar el tipado en algunos componentes ayudaría a prevenir errores y hacer el código más predecible y más fácil de mantener.
+
+- **Estilos Globales**: Implementar archivos globales para manejar estilos como colores, fuentes, y paddings etc. Esto permitiría una mayor consistencia en el diseño y facilitaría los cambios globales en el estilo de la aplicación.
+
+- **Optimización de Rendimiento**: Considerar optimizaciones para mejorar el rendimiento, como el uso eficiente de la memoria , la carga diferida de componentes y alguna memorización  de datos para evitar renders innecesarios podría mejorar la experiencia del usuario.
 
 
 
