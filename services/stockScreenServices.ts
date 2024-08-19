@@ -1,12 +1,18 @@
 import axios from "axios";
 import apiClient from "@/api/apiClient";
 
-export const getStockData = async (symbol: string, interval: string) => {
+export const getStockData = async (symbol: string, interval: string, start_date:string) => {
+
+const outputsize=13
+
   const url = "/time_series";
   const response = await apiClient.get(url, {
     params: {
       symbol,
       interval,
+      start_date,
+      outputsize
+
     },
   });
   return response;

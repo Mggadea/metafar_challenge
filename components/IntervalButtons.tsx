@@ -16,14 +16,14 @@ const intervals = [
 const IntervalButtons: React.FC<IntervalButtonsProps> = ({ setInterval, interval }) => {
   return (
     <View style={styles.container}>
-      {intervals.map(({ value, label }) => (
+      {intervals.map((item, index) => (
         <TouchableOpacity
-          key={value}
-          style={[styles.button, interval === value && styles.selected]}
-          onPress={() => setInterval(value)}
+          key={item.value}
+          style={[styles.button, interval.value === item.value && styles.selected]}
+          onPress={() => setInterval(item)}
         >
-          <Text style={[styles.buttonText, interval === value && styles.buttonTextSelected]}>
-            {label}
+          <Text style={[styles.buttonText, interval.value === item.value && styles.buttonTextSelected]}>
+            {item.label}
           </Text>
         </TouchableOpacity>
       ))}

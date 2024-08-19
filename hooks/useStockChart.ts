@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import { getStockData } from "@/services/stockScreenServices";
 import { dateFormat } from "../helpers/dateFormat";
 
-const useStockChart = (symbol: string, interval: string) => {
+const useStockChart = (symbol: string, interval: string, date:string) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   const loadData = async () => {
     try {
-      const fetchedData = await getStockData(symbol, interval);
+      const fetchedData = await getStockData(symbol, interval, date);
       if (fetchedData.data.status === "error") {
         setError(fetchedData.data.message);
       } else {

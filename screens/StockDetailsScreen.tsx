@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { useRoute } from '@react-navigation/native';
+import { useRoute } from "@react-navigation/native";
 import DetailsHeader from "@/components/DetailsHeader";
 import IntervalButtons from "@/components/IntervalButtons";
 import StockChart from "@/components/StockChart";
@@ -9,6 +9,7 @@ import ErrorScreen from "@/components/Error";
 import useStockChart from "@/hooks/useStockChart";
 import useStockDetails from "@/hooks/useStockDetails";
 import { getExcludedIndexes } from "@/helpers/getIndex";
+import { getFormattedDate } from "@/helpers/getFormatDate";
 
 const StockDetailsScreen = () => {
   const route = useRoute();
@@ -18,20 +19,25 @@ const StockDetailsScreen = () => {
     return <Text style={{ color: "red" }}>Symbol is required</Text>;
   }
 
-  const [interval, setInterval] = useState<string>("1h");
+  const [interval, setInterval] = useState({ value: "1h", label: "Diario" });
+
+  const date = getFormattedDate(interval.label)
+
 
   const {
     stockData,
     loading: loadingDetails,
     error: errorDetails,
-
   } = useStockDetails(symbol as string);
+
   const {
     chartData,
     loading: loadingChart,
     error: errorChart,
     loadData,
-  } = useStockChart(symbol as string, interval);
+  } = useStockChart(symbol as string, interval.value, date );
+
+
 
   const isLoading = loadingDetails || loadingChart;
   const error = errorDetails || errorChart;
@@ -44,6 +50,8 @@ const StockDetailsScreen = () => {
   return (
     <View style={styles.container}>
       <DetailsHeader symbol={symbol as string} stockDetails={stockData} />
+      <Text>
+      </Text>
       {chartData && <StockChart chartData={chartData} indices={indices} />}
       <IntervalButtons setInterval={setInterval} interval={interval} />
     </View>
